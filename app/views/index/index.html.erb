@@ -6,11 +6,11 @@
   </ul>
 </div>
 <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js"></script> -->
-<script src="http://jeanepaul-push-server.herokuapp.com/socket.io/socket.io.js"></script>
+<script src="http://jp-chat-push-notification-server.ap01.aws.af.cm/socket.io/socket.io.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
 
-      var socket = io.connect('http://jeanepaul-push-server.herokuapp.com:80');
+      var socket = io.connect('http://jp-chat-push-notification-server.ap01.aws.af.cm:80');
       //var socket = io.connect('http://127.0.0.1:1337');
       //var socket = io.connect(window.location.hostname)
       $('.message').keypress(function(e){
