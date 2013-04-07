@@ -1,24 +1,34 @@
-<input type="text" class="username">
-<input type="text" class="message">
+<input type="text" class="username"> <button class="register">register</button><br>
+<input type="text" class="receiver"> : to <br>
+<input type="text" class="message"> : message
 
+<p>my username: <span class="thisUsername"></span></p>
+<p>my message: <span class="prevMessage"></span></p>
+
+
+<p>my socket: <span class="socket"></span> </p>
 <div class="list_message">
   <ul class="messages">
   </ul>
 </div>
-<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js"></script> -->
-<script src="http://jp-chat-push-notification-server.ap01.aws.af.cm/socket.io/socket.io.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js"></script>
+<!--<script src="http://jp-chat-push-notification-server.ap01.aws.af.cm/socket.io/socket.io.js"></script> -->
 <script type="text/javascript">
   $(document).ready(function(){
+      var username;
 
-      var socket = io.connect('http://jp-chat-push-notification-server.ap01.aws.af.cm:80');
-      //var socket = io.connect('http://127.0.0.1:1337');
-      //var socket = io.connect(window.location.hostname)
+      $('.message').on('keyup', function(){
+         $('.prevMessage').html($('.message').val());
+      });
+
+      //var socket = io.connect('http://jp-chat-push-notification-server.ap01.aws.af.cm:80');
+      var socket = io.connect('http://127.0.0.1:3001');
       $('.message').keypress(function(e){
           if(e.which == 13) {
               var messageValue = $(this).val();
               var userName = $('.username').val();
-              var data  = {username: userName, message: messageValue};
-              console.log(data);
+              var receiver = $('.receiver').val();
+              var data  = {sender: userName, receiver: receiver, message: messageValue};
               socket.emit('my other event', data);
               $(this).val('')
           }
@@ -26,9 +36,21 @@
       socket.on('child_added', function(snapshot){
           var data = snapshot;
           console.log(data.message);
-          $('.messages').append('<li>' + data.username + " : " + data.message + '</li>')
+          $('.messages').append('<li>' + data.sender + " : " + data.message + '</li>')
 
-      })
+      });
+
+      $('.register').click(function(){
+          username = $('.username').val();
+          $('.thisUsername').html(username);
+          socket.emit('checkin', {identifier: username})
+      });
+
+//      socket.on('who are you', function(){
+//          //console.log(data);
+//          //$('span.socket').html(data);
+//          socket.emit('checkin', {identifier: username})
+//      })
 
 
   });
