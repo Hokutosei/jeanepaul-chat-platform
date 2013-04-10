@@ -7,6 +7,9 @@
 
 
 <p>my socket: <span class="socket"></span> </p>
+<p>status: <span class="acknowledged_user"></span></p>
+<ul class="logged_in_users"></ul>
+
 <div class="list_message">
   <ul class="messages">
   </ul>
@@ -39,11 +42,40 @@
           $('.messages').append('<li>' + data.sender + " : " + data.message + '</li>')
 
       });
+      socket.on('logged_in_users', function(data){
+          var online_users = [];
+          $.each(data, function(key){
+              console.log(key);
+              online_users.push(key);
+//              $('.logged_in_users').append('<li class="online_user" id="' + key +'">' + key + '</li>').css({cursor: 'pointer'});
+          });
+          console.log(online_users);
+          $('.logged_in_users').empty();
+          $.each(online_users, function(key, value){
+             // $('.logged_in_users').append('<li>' + value + '</li>').css({cursor: 'pointer'})
+             $('.logged_in_users').append('<li class="online_user" id="' + value +'">' + value + '</li>').css({cursor: 'pointer'});
+          });
+          $('.online_user').click(function(){
+              //alert($(this).attr('id'))
+              $('.receiver').val($(this).attr('id'));
+          })
+
+      });
 
       $('.register').click(function(){
           username = $('.username').val();
           $('.thisUsername').html(username);
           socket.emit('checkin', {identifier: username})
+      });
+
+      socket.on('check user', function(){
+          var user = $('.username').val();
+          $('.acknowledge_user').html('Checking...');
+          //socket.emit('user online',{user: user})
+          setTimeout(socket.emit('user online',{user: user}), 3000);
+      });
+      socket.on('acknowledge user', function(data){
+          $('.acknowledged_user').html(data)
       });
 
 //      socket.on('who are you', function(){
