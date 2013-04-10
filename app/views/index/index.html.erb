@@ -14,8 +14,8 @@
   <ul class="messages">
   </ul>
 </div>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js"></script>
-<!--<script src="http://jp-chat-push-notification-server.ap01.aws.af.cm/socket.io/socket.io.js"></script> -->
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.10/socket.io.min.js"></script>-->
+<script src="http://jp-chat-push-notification-server.ap01.aws.af.cm/socket.io/socket.io.js"></script> 
 <script type="text/javascript">
   $(document).ready(function(){
       var username;
@@ -24,8 +24,8 @@
          $('.prevMessage').html($('.message').val());
       });
 
-      //var socket = io.connect('http://jp-chat-push-notification-server.ap01.aws.af.cm:80');
-      var socket = io.connect('http://127.0.0.1:3001');
+      var socket = io.connect('http://jp-chat-push-notification-server.ap01.aws.af.cm:80');
+      //var socket = io.connect('http://127.0.0.1:3001');
       $('.message').keypress(function(e){
           if(e.which == 13) {
               var messageValue = $(this).val();
